@@ -2,32 +2,32 @@ package requirement.requirements;
 
 import java.util.regex.Pattern;
 
-import localisation.Languages;
-
 /**
  * A wrapper for a regular expression that a String must match.
+ * <p>
+ * TODO: add more types according to standard regex
  *
  * @author Alex Mandelias
  */
 public enum StringType {
 
 	/** Type for non-negative integers */
-	NON_NEG_INTEGER("[0-9]+", Languages.getString("StringType.1")), //$NON-NLS-1$ //$NON-NLS-2$
+	NON_NEG_INTEGER("[0-9]+", "Non-negative int"),
 
 	/** Type for positive integers */
-	POS_INTEGER("[1-9][0-9]*", Languages.getString("StringType.3")), //$NON-NLS-1$ //$NON-NLS-2$
+	POS_INTEGER("[1-9][0-9]*", "Positive integer"),
 
 	/** Type for valid file names */
-	FILENAME("^[^\\\\/:*?\"<>|]*$", Languages.getString("StringType.5")), //$NON-NLS-1$ //$NON-NLS-2$
+	FILENAME("^[^\\\\/:*?\"<>|]*$", "Valid file name"),
 
 	/** Type for any non-empty string */
-	NON_EMPTY(".+", Languages.getString("StringType.7")), //$NON-NLS-1$ //$NON-NLS-2$
+	NON_EMPTY(".+", "Non-empty string"),
 
 	/** Type for any non-empty string */
-	ANY(".*", Languages.getString("StringType.9")), //$NON-NLS-1$ //$NON-NLS-2$
+	ANY(".*", "Any string"),
 
 	/** Type for custom regex. Defaults to {@link #ANY}. */
-	CUSTOM(".*", Languages.getString("StringType.11")) { //$NON-NLS-1$ //$NON-NLS-2$
+	CUSTOM(".*", "Custom") {
 		@Override
 		public StringType alter(String regex, String desc) {
 			p = Pattern.compile(regex);

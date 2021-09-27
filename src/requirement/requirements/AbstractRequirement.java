@@ -2,7 +2,6 @@ package requirement.requirements;
 
 import java.io.Serializable;
 
-import localisation.RequirementStrings;
 import requirement.exceptions.LockedRequirementException;
 import requirement.graphics.AbstractRequirementGraphic;
 import requirement.graphics.NullRequirementGraphic;
@@ -405,18 +404,14 @@ public abstract class AbstractRequirement implements Serializable, Cloneable {
 	public final String toString() {
 		final StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
 
-		sb.append(String.format(": %s%n", key)) //$NON-NLS-1$
-		        .append(String.format("\tDefault    %s%n", defaultValue)) //$NON-NLS-1$
-		        .append(String.format("\tValue:     %s%n", value)) //$NON-NLS-1$
-		        .append(String.format("\tFulfilled: %s%n", //$NON-NLS-1$
-		                AbstractRequirement.yesIfTrueElseNo(fulfilled())))
-		        .append(String.format("\tFinalised: %s%n", //$NON-NLS-1$
-		                AbstractRequirement.yesIfTrueElseNo(finalised())));
+		sb.append(String.format(": %s%n", key))
+		        .append(String.format("\tDefault    %s%n", defaultValue))
+		        .append(String.format("\tValue:     %s%n", value))
+		        .append(String.format("\tFulfilled: %s%n",
+		                fulfilled() ? "yes" : "no"))
+		        .append(String.format("\tFinalised: %s%n",
+		                fulfilled() ? "yes" : "no"));
 
 		return sb.toString();
-	}
-
-	private static String yesIfTrueElseNo(boolean b) {
-		return b ? RequirementStrings.YES : RequirementStrings.NO;
 	}
 }

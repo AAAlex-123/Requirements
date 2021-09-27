@@ -27,11 +27,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import application.editor.StatusBar;
-import application.editor.StatusBar.MessageType;
-import localisation.Languages;
-import localisation.RequirementStrings;
-import myUtil.Utility;
 import requirement.graphics.AbstractRequirementGraphic;
 import requirement.graphics.NullRequirementGraphic;
 import requirement.requirements.AbstractRequirement;
@@ -96,11 +91,11 @@ public final class RequirementsDialog extends JDialog {
 			dialog.setModal(false);
 			dialog.setVisible(true);
 
-			final String messageString = Languages.getString("RequirementsDialog.0"); //$NON-NLS-1$
-			final String titleString   = Languages.getString("RequirementsDialog.2"); //$NON-NLS-1$
+			final String messageString = "An error occurred while displaying the dialog.<br>Please take a screenshot of the dialog and pass it to the developer.";
+			final String titleString   = "Error while displaying the dialog";
 
 			JOptionPane.showMessageDialog(dialog,
-			        String.format("<html><center>%s</center></html>", messageString), //$NON-NLS-1$
+			        String.format("<html><center>%s</center></html>", messageString),
 			        titleString, JOptionPane.ERROR_MESSAGE);
 
 			dialog.setModal(true);
@@ -123,16 +118,16 @@ public final class RequirementsDialog extends JDialog {
 
 		// --- buttons panel (bottom) ---
 		buttonsPanel = new JPanel(new FlowLayout());
-		buttonsPanel.add(okButton = new JButton(Languages.getString("RequirementsDialog.3"))); //$NON-NLS-1$
-		buttonsPanel.add(cancelButton = new JButton(Languages.getString("RequirementsDialog.4"))); //$NON-NLS-1$
-		buttonsPanel.add(resetButton = new JButton(Languages.getString("RequirementsDialog.5"))); //$NON-NLS-1$
+		buttonsPanel.add(okButton = new JButton("OK"));
+		buttonsPanel.add(cancelButton = new JButton("Cancel"));
+		buttonsPanel.add(resetButton = new JButton("Reset"));
 
 		sb = new StatusBar();
-		sb.addLabel(RequirementStrings.MESSAGE);
+		sb.addLabel("message", StatusBar.MessageType.FAILURE);
 
 		// --- options panel (middle) ---
 		optionsPanel = new JPanel(new GridLayout(requirements.size(), 1, 0, 15));
-		Utility.foreach(requirements, req -> {
+		requirements.stream().forEach(req -> {
 			final AbstractRequirementGraphic<?> graphic = req.constructAndGetGraphic();
 			map.put(req, graphic);
 			optionsPanel.add(graphic);
@@ -143,8 +138,7 @@ public final class RequirementsDialog extends JDialog {
 		if (!allReqsHaveGraphics || runtimeGraphicError) {
 			okButton.setEnabled(false);
 			resetButton.setEnabled(false);
-			sb.setLabelText(RequirementStrings.MESSAGE, MessageType.FAILURE,
-			        Languages.getString("RequirementsDialog.6")); //$NON-NLS-1$
+			sb.setLabelText("message", "Graphic Error");
 		}
 
 		// --- scroll pane (for options panel) ---
@@ -190,7 +184,7 @@ public final class RequirementsDialog extends JDialog {
 	 * @see AbstractRequirement#fulfilled()
 	 */
 	private boolean validateInput() {
-		Utility.foreach(requirements, req -> {
+		requirements.stream().forEach(req -> {
 			final AbstractRequirementGraphic<?> g = map.get(req);
 
 			if (!req.finalised())
@@ -203,8 +197,7 @@ public final class RequirementsDialog extends JDialog {
 		final boolean fulfilled = requirements.fulfilled();
 
 		if (!fulfilled) {
-			sb.setLabelText(RequirementStrings.MESSAGE,
-			        Languages.getString("RequirementsDialog.7")); //$NON-NLS-1$
+			sb.setLabelText("message", "Give correct values!");
 
 			// give focus to the first non-fulfilled Requirement
 			for (final AbstractRequirement req : requirements)
@@ -237,7 +230,7 @@ public final class RequirementsDialog extends JDialog {
 		final Action pressReset = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Utility.foreach(requirements, AbstractRequirement::reset);
+				requirements.stream().forEach(AbstractRequirement::reset);
 			}
 		};
 
