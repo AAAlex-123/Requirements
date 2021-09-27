@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import localisation.Languages;
 import requirement.requirements.AbstractRequirement;
 
 /**
@@ -70,14 +69,11 @@ public class NullRequirementGraphic extends AbstractRequirementGraphic<AbstractR
 		super(requirement);
 		setLayout(new BorderLayout());
 
-		final String iconName     = String.format("OptionPane.%sIcon",               //$NON-NLS-1$
-		        error ? "error" : "information");                                    //$NON-NLS-1$ //$NON-NLS-2$
-		final String keyString    = Languages.getString("NullRequirementGraphic.0"); //$NON-NLS-1$
-		final String reasonString = Languages.getString("NullRequirementGraphic.1"); //$NON-NLS-1$
+		final String iconName = String.format("OptionPane.%sIcon", error ? "error" : "information");
 
 		icon = new JLabel(UIManager.getIcon(iconName));
-		key = new JLabel(String.format(keyString, requirement.key()));
-		reason = new JLabel(String.format(reasonString, cause));
+		key = new JLabel("No Graphic for: %s" + requirement.key());
+		reason = new JLabel("Reason: %s" + cause);
 
 		key.setHorizontalAlignment(SwingConstants.CENTER);
 		reason.setHorizontalAlignment(SwingConstants.CENTER);
