@@ -3,7 +3,6 @@ package requirement.requirements;
 import java.util.ArrayList;
 import java.util.List;
 
-import localisation.Languages;
 import requirement.graphics.AbstractRequirementGraphic;
 import requirement.graphics.ListRequirementGraphic;
 
@@ -40,7 +39,7 @@ public class ListRequirement<T> extends AbstractRequirement {
 	public ListRequirement(String key, List<T> options) {
 		super(key);
 		this.options = options;
-		setCaseOfNullGraphic(true, Languages.getString("ListRequirement.0")); //$NON-NLS-1$
+		setCaseOfNullGraphic(true, "No options");
 	}
 
 	@Override
