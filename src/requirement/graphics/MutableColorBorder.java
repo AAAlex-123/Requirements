@@ -1,4 +1,4 @@
-package myUtil;
+package requirement.graphics;
 
 import java.awt.Color;
 import java.awt.Component;
