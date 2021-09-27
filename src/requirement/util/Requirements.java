@@ -8,17 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import component.components.Component;
-import localisation.RequirementStrings;
-import myUtil.Utility;
 import requirement.exceptions.MissingRequirementException;
 import requirement.requirements.AbstractRequirement;
-import requirement.requirements.ComponentRequirement;
 import requirement.requirements.ListRequirement;
 import requirement.requirements.ObjectRequirement;
 import requirement.requirements.StringRequirement;
 import requirement.requirements.StringType;
-import requirement.requirements.ComponentRequirement.Policy;
 
 /**
  * A wrapper for creating, storing, retrieving and iterating over a collection
@@ -48,7 +43,8 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @param other the Requirements object to be copied
 	 */
 	public Requirements(Requirements other) {
-		Utility.foreach(other, req -> add(req.clone()));
+		for (final AbstractRequirement req : other)
+			add(req.clone());
 	}
 
 	/**
@@ -99,21 +95,6 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 */
 	public <T> void add(String key, List<T> values) {
 		add(new ListRequirement<>(key, values));
-	}
-
-	/**
-	 * Constructs and {@code adds} a Component-specific Requirement to this
-	 * collection as specified by the {@link #add(AbstractRequirement)} method.
-	 *
-	 * @param key        the key of the new Requirement
-	 * @param components the options of the new Component Requirement
-	 * @param policy     the Policy for filtering the Components
-	 *
-	 * @see ComponentRequirement
-	 * @see Policy
-	 */
-	public void add(String key, List<Component> components, Policy policy) {
-		add(new ComponentRequirement(key, components, policy));
 	}
 
 	/**
@@ -222,7 +203,7 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 *
 	 * @return the value of the Requirement that is cast to a specific class by
 	 *         applying the Function
-	 * 
+	 *
 	 * @implSpec this method returns {@code castFunction.apply(getValue(key))}
 	 */
 	public <E> E getValue(String key, Function<Object, E> castFunction) {
@@ -310,7 +291,8 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#clear()
 	 */
 	public void clear() {
-		Utility.foreach(this, AbstractRequirement::clear);
+		for (final AbstractRequirement req : this)
+			req.clear();
 	}
 
 	/**
@@ -319,7 +301,8 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#reset()
 	 */
 	public void reset() {
-		Utility.foreach(this, AbstractRequirement::reset);
+		for (final AbstractRequirement req : this)
+			req.reset();
 	}
 
 	/**
@@ -331,7 +314,10 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#fulfilled
 	 */
 	public boolean fulfilled() {
-		return Utility.all(this, AbstractRequirement::fulfilled);
+		for (final AbstractRequirement req : this)
+			if (!req.fulfilled())
+				return false;
+		return true;
 	}
 
 	/**
@@ -343,7 +329,10 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#fulfilled
 	 */
 	public boolean finalised() {
-		return Utility.all(this, AbstractRequirement::finalised);
+		for (final AbstractRequirement req : this)
+			if (!req.finalised())
+				return false;
+		return true;
 	}
 
 	@Override
@@ -355,9 +344,12 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(String.format("Requirements fulfilled: %s, finalised: %s%n", //$NON-NLS-1$
-				fulfilled() ? RequirementStrings.YES : RequirementStrings.NO,
-						finalised() ? RequirementStrings.YES : RequirementStrings.NO));
-		Utility.foreach(this, req -> sb.append(req));
+		        fulfilled() ? "yes" : "no",
+		        finalised() ? "yes" : "no"));
+
+		for (final AbstractRequirement req : this)
+			sb.append(req);
+
 		return sb.toString();
 	}
 
