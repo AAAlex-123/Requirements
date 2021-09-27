@@ -10,8 +10,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import localisation.Languages;
-import myUtil.MutableColorBorder;
 import requirement.requirements.ListRequirement;
 
 /**
@@ -47,8 +45,8 @@ public class ListRequirementGraphic<T> extends AbstractRequirementGraphic<ListRe
 		optionBox.setMaximumSize(new Dimension(200, 30));
 		AutoCompletion.enable(optionBox);
 
-		final String promptString = Languages.getString("ListRequirementGraphic.0"); //$NON-NLS-1$
-		add(new JLabel(String.format(promptString, requirement.key())));
+		final String labelText = String.format("Choose an option for '%s':", requirement.key());
+		add(new JLabel(labelText));
 		add(optionBox);
 	}
 
