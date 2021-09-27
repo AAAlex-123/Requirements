@@ -127,13 +127,13 @@ public final class RequirementsDialog extends JDialog {
 
 		// --- options panel (middle) ---
 		optionsPanel = new JPanel(new GridLayout(requirements.size(), 1, 0, 15));
-		for (final AbstractRequirement req : requirements) {
+		requirements.stream().forEach(req -> {
 			final AbstractRequirementGraphic<?> graphic = req.constructAndGetGraphic();
 			map.put(req, graphic);
 			optionsPanel.add(graphic);
 			allReqsHaveGraphics &= req.hasGraphic();
 			runtimeGraphicError |= req.graphicError();
-		}
+		});
 
 		if (!allReqsHaveGraphics || runtimeGraphicError) {
 			okButton.setEnabled(false);
@@ -184,7 +184,7 @@ public final class RequirementsDialog extends JDialog {
 	 * @see AbstractRequirement#fulfilled()
 	 */
 	private boolean validateInput() {
-		for (final AbstractRequirement req : requirements) {
+		requirements.stream().forEach(req -> {
 			final AbstractRequirementGraphic<?> g = map.get(req);
 
 			if (!req.finalised())
@@ -192,7 +192,7 @@ public final class RequirementsDialog extends JDialog {
 
 			if (!req.fulfilled())
 				g.onNotFulfilled();
-		}
+		});
 
 		final boolean fulfilled = requirements.fulfilled();
 
@@ -230,8 +230,7 @@ public final class RequirementsDialog extends JDialog {
 		final Action pressReset = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final AbstractRequirement req : requirements)
-					req.reset();
+				requirements.stream().forEach(AbstractRequirement::reset);
 			}
 		};
 
