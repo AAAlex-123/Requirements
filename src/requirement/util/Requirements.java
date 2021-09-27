@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import requirement.exceptions.MissingRequirementException;
 import requirement.requirements.AbstractRequirement;
@@ -291,8 +292,7 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#clear()
 	 */
 	public void clear() {
-		for (final AbstractRequirement req : this)
-			req.clear();
+		this.stream().forEach(AbstractRequirement::clear);
 	}
 
 	/**
@@ -301,8 +301,7 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#reset()
 	 */
 	public void reset() {
-		for (final AbstractRequirement req : this)
-			req.reset();
+		this.stream().forEach(AbstractRequirement::reset);
 	}
 
 	/**
@@ -314,10 +313,7 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#fulfilled
 	 */
 	public boolean fulfilled() {
-		for (final AbstractRequirement req : this)
-			if (!req.fulfilled())
-				return false;
-		return true;
+		return this.stream().allMatch(AbstractRequirement::fulfilled);
 	}
 
 	/**
@@ -329,15 +325,23 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 	 * @see AbstractRequirement#fulfilled
 	 */
 	public boolean finalised() {
-		for (final AbstractRequirement req : this)
-			if (!req.finalised())
-				return false;
-		return true;
+		return this.stream().allMatch(AbstractRequirement::finalised);
 	}
 
 	@Override
 	public Iterator<AbstractRequirement> iterator() {
 		return new RequirementsIterator();
+	}
+
+	/**
+	 * Returns a sequential {@code Stream} with this collection as its source.
+	 *
+	 * @return a sequential {@code Stream} over the elements in this collection
+	 *
+	 * @see java.util.Collection#stream()
+	 */
+	public Stream<AbstractRequirement> stream() {
+		return requirements.values().stream();
 	}
 
 	@Override
@@ -347,8 +351,7 @@ public final class Requirements implements Iterable<AbstractRequirement>, Serial
 		        fulfilled() ? "yes" : "no",
 		        finalised() ? "yes" : "no"));
 
-		for (final AbstractRequirement req : this)
-			sb.append(req);
+		this.stream().forEach(req -> sb.append(req));
 
 		return sb.toString();
 	}
