@@ -34,67 +34,80 @@ Use Requirements
 
 Real-world example
 
-> A teacher in a classroom needs something to write on the board. After requesting that 
-> object, a student takes the responsibility to fulfil the teacher's request and leaves 
-> the classroom. By means unknown to the teacher, the student later returns with a marker 
-> and gives it back to the teacher so that they can write on the board.
+> A teacher in a classroom needs something to write on the board and something to erase 
+> from it. They write in a piece of paper all the items they need and select the 
+> appropriate tray to carry these items. A student takes the responsibility to fulfil the 
+> teacher's request and leaves the classroom holding that piece of paper and the tray. By 
+> means unknown to the teacher, the student later returns with a marker and a sponge, 
+> which are placed on the tray, and gives the tray back to the teacher so that they can 
+> retrieve the requested objects from it.
 
 In plain words
 
 > A Requirement object represents a request made by object A. Object B uses that 
 > Requirement to fulfil it and gives it back to object A to use the requested object.
 
-**Programmatic Example**
+ ## Simple Example
 
-Let's define a compiler that needs to know its input and output files
+Let's define a compiler that needs to know its input and output files, and whether or not 
+to output all messages during compilation
 
 ```java
 public class Compiler {
 
 	public static Requirements getRequirements() {
 		Requirements reqs = new Requirements();
-		reqs.add("input_file");
-		reqs.add("output_file");
+		
+		// define required objects
+		reqs.add("input_file", StringType.FILENAME);
+		reqs.add("output_file", StringType.FILENAME);
 		reqs.add("verbose", Arrays.asList(true, false));
 		return reqs;
 	}
 
 	public void compile(Requirements reqs) {
+		// retrieve required objects
 		File    input_file  = new File(reqs.getValue("input_file", String.class));
 		File    output_file = new File(reqs.getValue("output_file", String.class));
 		boolean verbose     = reqs.getValue("verbose", Boolean.class);
 
+		// use required objects
 		System.out.printf("Compiling from '%s'%n", input_file);
 		System.out.printf("Outputing to   '%s'%n", output_file);
 		System.out.printf("Printing %s messages%n", verbose ? "all" : "some");
-		// read source code from input file
-		// compile source code
-		// write generated code to output file
 	}
 }
 ```
-Here's how the compiler's Requirements can be used to modify its compilation parameters:
+Here's how the Compiler's Requirements can be used to modify its compilation parameters:
 
 ```java
 public class App {
 
 	public static void main(String[] args) {
+		// get the Requirements and fulfil them as deemed appropriate by the App
 		Requirements testReqs = Compiler.getRequirements();
-		testReqs.fulfil("input_file", "test.c");
-		testReqs.fulfil("output_file", "test.out");
-		testReqs.fulfil("verbose", false);
+		fulfilTestReqs(testReqs);
 
 		Requirements productionReqs = Compiler.getRequirements();
-		productionReqs.fulfil("input_file", "src.c");
-		productionReqs.fulfil("output_file", "a.out");
-		promptAndFulfilVerbose(productionReqs);
+		fulfilProductionReqs(productionReqs);
 
+		// use the Requirements to compile in 2 different ways, as specified by
+		// the different values given to the parameters in the Requirements
 		Compiler compiler = new Compiler();
 		compiler.compile(testReqs);
 		compiler.compile(productionReqs);
 	}
 
-	private static void promptAndFulfilVerbose(Requirements reqs) {
+	private static void fulfilTestReqs(Requirements reqs) {
+		reqs.fulfil("input_file", "test.c");
+		reqs.fulfil("output_file", "test.out");
+		reqs.fulfil("verbose", false);
+	}
+
+	private static void fulfilProductionReqs(Requirements reqs) {
+		reqs.fulfil("input_file", "src.c");
+		reqs.fulfil("output_file", "a.out");
+
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Do you want to print all messages during compilation? (y/n)");
 		boolean verbose = scanner.nextLine().equals("y");
@@ -102,16 +115,17 @@ public class App {
 	}
 }
 ```
-
 **Notes**
-* Altering the Requirements:
-  * There are no methods for specifying the parameters (e.g.`setInputFile(String)` or 
-`Compiler(String input, String output, boolean verbose)`), therefore altering what the 
-compiler needs to function is as simple as changing the Requirements object returned. 
-  * Similarly, the client code doesn't have to change its method or constructor calls 
-whenever the compiler is changed, only the way the individual requirements that are 
-fulfilled.
+* Altering the Requirements is as simple as:
+  * defining different required objects when constructing the Requirements object
+  * fulfiling different Requirements
+  * retrieving different values when needed
+* Instead of private String and boolean fields, the compilation information is contained 
+within a single Requirements object
+* Different parameteres for accomplishing the same task can be used by simply using a 
+different Requirements object, without needing to call multiple setter methods
 
 ## Known uses
 
 * [This project](https://github.com/AAAlex-123/Simple-CAD-Tool/) uses Requirements to change the behaviour of the Command and Actions classes.
+* [This project](https://github.com/AAAlex-123/SML-compiler-runtime/) uses Requirements as shown in the example
