@@ -127,5 +127,11 @@ different Requirements object, without needing to call multiple setter methods
 
 ## Known uses
 
-* [This project](https://github.com/AAAlex-123/Simple-CAD-Tool/) uses Requirements to change the behaviour of the Command and Actions classes.
-* [This project](https://github.com/AAAlex-123/SML-compiler-runtime/) uses Requirements as shown in the example
+* [This project](https://github.com/AAAlex-123/Simple-CAD-Tool/) uses Requirements to 
+change the behaviour of the Command and Actions classes.
+* [This project](https://github.com/AAAlex-123/SML-compiler-runtime/) uses Requirements as 
+shown in the example
+
+## Acknowledgements
+
+* [dimits](https://github.com/dimits-exe/) for the ListRequirement and its Graphic
