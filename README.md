@@ -4,6 +4,32 @@
 Decouple the request for an object, the object responsible for fulfiling that request and 
 the fulfilment itself.
 
+## Motivation
+Sometimes a class has a number of private fields, along with their setters, which can be 
+set to customize the behaviour of an object of the class. Calling different methods to 
+specify different parameters makes extending or modifying the parameters of the object 
+rather difficult since new methods must be defined or the existing ones must have a 
+different signature, which heavily impacts client code. Having many private fields can 
+also be impractical for the class itself and the number of setter methods pollute the 
+public API of the class as well as its source files. Giving freedom to users of this class 
+to set these private fields at any time necessitates multiple additional checks (possibly 
+at every setter) to ensure that the data reains consistent.
+
+A Requirements object (a collection of individual Requirements) solves all of the above 
+problems. It encapsulates all of the information contained in the private fields and 
+provides a way to set each and every one of them, without the need for separate setter 
+methods. Additionally, extending or modifying the parameters needed is as simple as 
+adding, removing or changing a Requirement in the collection. The class itself can access 
+the values of the parameters in a way similar to the get operation of a map. To protect 
+the Requirements object from being altered with new values at inappropriate times, the 
+class shall take responsibility to provide a safe way to use the Requirements object.
+
+## Applicability
+Use Requirements
+* to encapsulate the parameters that a class needs to function
+* to provide a uniform way to specify these parameters
+* to allow the class that uses to easily access their values
+
 ## Explanation
 
 Real-world example
@@ -85,20 +111,6 @@ compiler needs to function is as simple as changing the Requirements object retu
   * Similarly, the client code doesn't have to change its method or constructor calls 
 whenever the compiler is changed, only the way the individual requirements that are 
 fulfilled.
-
-## Class diagram
-
-![!TODO!](#lurl#)
-
-## Applicability
-
-!TOOD!
-The Template Method pattern should be used
-
-* To implement the invariant parts of an algorithm once and leave it up to subclasses to implement the behavior that can vary
-* When common behavior among subclasses should be factored and localized in a common class to avoid code duplication. This is a good example of "refactoring to generalize" as described by Opdyke and Johnson. You first identify the differences in the existing code and then separate the differences into new operations. Finally, you replace the differing code with a template method that calls one of these new operations
-* To control subclasses extensions. You can define a template method that calls "hook" operations at specific points, thereby permitting extensions only at those points
-
 
 ## Known uses
 
