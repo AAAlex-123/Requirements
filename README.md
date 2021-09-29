@@ -124,6 +124,13 @@ public class App {
 within a single Requirements object
 * Different parameteres for accomplishing the same task can be used by simply using a 
 different Requirements object, without needing to call multiple setter methods
+* An alternative to using Requirements would be to define a `CompilationParameters` class 
+which itself contains the two String and boolean fields and pass it around. While this 
+class can define getter and setter methods which can better validate the parameters, doing 
+so requires a lot of boilerplate code which cannot easily be modified to accomodate for 
+new needs. This library aims to cover the most common use cases and provide as much 
+customisability and extensibility as possible to allow for effective use without much of a
+compromise compared to a more specialized solution.
 
 ## Known uses
 
