@@ -5,24 +5,16 @@ Decouple the request for an object, the object responsible for fulfiling that re
 the fulfilment itself.
 
 ## Motivation
-Sometimes a class has a number of private fields, along with their setters, which can be 
-set to customize the behaviour of an object of the class. Calling different methods to 
-specify different parameters makes extending or modifying the parameters of the object 
-rather difficult since new methods must be defined or the existing ones must have a 
-different signature, which heavily impacts client code. Having many private fields can 
-also be impractical for the class itself and the number of setter methods pollute the 
-public API of the class as well as its source files. Giving freedom to users of this class 
-to set these private fields at any time necessitates multiple additional checks (possibly 
-at every setter) to ensure that the data reains consistent.
+Requirements can be used when a class has a number of private fields which can be set to customise the its behaviour.
+The problems that arise in this situation are the following:
+1. Extending or modifying the parameters (private fields) is difficult since it requires calling different methods to specify different parameters (private fields) makes extending or modifying them difficult since new setter methods must be defined or the existing ones must change their signature. This requires extensive changes to code that uses this class in the form of new API calls.
+2. Having many private fields and setter methods pollute the public API of the class as well as its source files making this solution impractical for the class itself. 
+3. Giving freedom to users of the class to set these private fields at any time necessitates multiple additional checks (possibly at every setter) to ensure that the data remains consistent.
 
-A Requirements object (a collection of individual Requirements) solves all of the above 
-problems. It encapsulates all of the information contained in the private fields and 
-provides a way to set each and every one of them, without the need for separate setter 
-methods. Additionally, extending or modifying the parameters needed is as simple as 
-adding, removing or changing a Requirement in the collection. The class itself can access 
-the values of the parameters in a way similar to the get operation of a map. To protect 
-the Requirements object from being altered with new values at inappropriate times, the 
-class shall take responsibility to provide a safe way to use the Requirements object.
+A Requirements object (a collection of individual Requirements) solve the above problems in the following manner:
+1. Extending or modifying the parameters is as simple as adding, removing or changing a Requirement in the collection. 
+2. The private fields and the setter methods are contained in a single Requirements object which can be accessed by client code. The class itself can access the values of the parameters in a way similar to the get operation of a map. This reduces clutter in the source code.
+3. To protect the Requirements object from being altered with new values at inappropriate times, the class shall take responsibility to provide a safe way to use the Requirements object.
 
 ## Applicability
 Use Requirements
