@@ -126,12 +126,19 @@ object) aims to cover the most common use cases, similar but not limited to the
 possible to allow for effective use without compromise when compared to a more specialized 
 solution.
 
-## Known uses
+## Known Uses
 
 * [This project](https://github.com/AAAlex-123/Simple-CAD-Tool/) uses Requirements to 
 change the behaviour of the Command and Actions classes.
 * [This project](https://github.com/AAAlex-123/SML-compiler-runtime/) uses Requirements as 
 shown in the example
+
+## Feedback and Contribution
+
+Both are welcome! Because this is my first library and it was designed with the needs of 
+the another project in mind (the first of the Known Uses section), there may be a 
+multitude of design flaws I've yet to find and fix. Any problems reported in the issues 
+section or improvements in the form of pull requests are greatly appreciated.
 
 ## Acknowledgements
 
