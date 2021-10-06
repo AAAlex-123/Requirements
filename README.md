@@ -17,14 +17,15 @@ A Requirements object (a collection of individual Requirements) solve the above 
 3. To protect the Requirements object from being altered with new values at inappropriate times, the class shall take responsibility to provide a safe way to use the Requirements object.
 
 ## Applicability
-Use Requirements
+
+Use Requirements:
 * to encapsulate the parameters that a class needs to function
 * to provide a uniform way to specify these parameters
 * to allow the class that uses to easily access their values
 
 ## Explanation
 
-Real-world example
+Real-world example:
 
 > A teacher in a classroom needs something to write on the board and something to erase 
 > from it. They write in a piece of paper all the items they need and select the 
@@ -34,7 +35,7 @@ Real-world example
 > which are placed on the tray, and gives the tray back to the teacher so that they can 
 > retrieve the requested objects from it.
 
-In plain words
+In plain words:
 
 > A Requirement object represents a request made by object A. Object B uses that 
 > Requirement to fulfil it and gives it back to object A to use the requested object.
@@ -42,7 +43,7 @@ In plain words
  ## Simple Example
 
 Let's define a compiler that needs to know its input and output files, and whether or not 
-to output all messages during compilation
+to output all messages during compilation:
 
 ```java
 public class Compiler {
@@ -107,7 +108,7 @@ public class App {
 	}
 }
 ```
-**Notes**
+**Notes:**
 * Altering the Requirements is as simple as:
   * defining different required objects when constructing the Requirements object
   * fulfiling different Requirements
@@ -116,13 +117,14 @@ public class App {
 within a single Requirements object
 * Different parameteres for accomplishing the same task can be used by simply using a 
 different Requirements object, without needing to call multiple setter methods
-* An alternative to using Requirements would be to define a `CompilationParameters` class 
-which itself contains the two String and boolean fields and pass it around. While this 
-class can define getter and setter methods which can better validate the parameters, doing 
-so requires a lot of boilerplate code which cannot easily be modified to accomodate for 
-new needs. This library aims to cover the most common use cases and provide as much 
-customisability and extensibility as possible to allow for effective use without much of a
-compromise compared to a more specialized solution.
+* An alternative is to define a `CompilationParameters` class which itself contains the 
+private fields. While this class can define getter and setter methods which better 
+validates the parameters, this requires a lot of boilerplate code which cannot easily be 
+modified to accomodate for new needs. This library (and specifically the Requirements 
+object) aims to cover the most common use cases, similar but not limited to the 
+`CompilationParameters` class, and provide as much customisability and extensibility as 
+possible to allow for effective use without compromise when compared to a more specialized 
+solution.
 
 ## Known uses
 
