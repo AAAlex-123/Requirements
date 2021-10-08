@@ -4,6 +4,11 @@
 Decouple the request for an object, the object responsible for fulfiling that request and 
 the fulfilment itself.
 
+## Overview
+A feature-rich map 
+whose functionality is tailored to passing around objects 
+with adittional functionality for validating
+
 ## Motivation
 Requirements can be used when a class has a number of private fields which can be set to customise the its behaviour.
 The problems that arise in this situation are the following:
@@ -17,14 +22,12 @@ A Requirements object (a collection of individual Requirements) solve the above 
 3. To protect the Requirements object from being altered with new values at inappropriate times, the class shall take responsibility to provide a safe way to use the Requirements object.
 
 ## Applicability
-
 Use Requirements:
 * to encapsulate the parameters that a class needs to function
 * to provide a uniform way to specify these parameters
 * to allow the class that uses to easily access their values
 
 ## Explanation
-
 Real-world example:
 
 > A teacher in a classroom needs something to write on the board and something to erase 
@@ -41,7 +44,6 @@ In plain words:
 > Requirement to fulfil it and gives it back to object A to use the requested object.
 
  ## Simple Example
-
 Let's define a compiler that needs to know its input and output files, and whether or not 
 to output all messages during compilation:
 
@@ -127,7 +129,6 @@ possible to allow for effective use without compromise when compared to a more s
 solution.
 
 ## Known Uses
-
 * [This project](https://github.com/AAAlex-123/Simple-CAD-Tool/) uses Requirements to 
 change the behaviour of the Command and Actions classes.
 * [This project](https://github.com/AAAlex-123/SML-compiler-runtime/) uses Requirements as 
@@ -140,5 +141,4 @@ multitude of design flaws I've yet to find and fix. Any problems reported in the
 section or improvements in the form of pull requests are greatly appreciated.
 
 ## Acknowledgements
-
 * [dimits](https://github.com/dimits-exe/) for the ListRequirement and its Graphic
